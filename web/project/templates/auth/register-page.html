@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>NEXOS</title>
+    <link rel="icon" type="image/png" href="{% static '/img/logo.png' %}">
+    <link rel="stylesheet" href="{% static '/auth/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <input type="text" placeholder="Nome" name="nome">
+        </div>
+        <div class="form-group">
+            <input type="email" placeholder="Email" name="email">
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Senha" name="senha">
+        </div>
+    </div>
+</body>
+</html>
