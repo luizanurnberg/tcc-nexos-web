@@ -1,4 +1,4 @@
-#!/home/luiza/Downloads/tcc/nexos/venv/bin/python3
+#!/home/luiza/Downloads/tcc/tcc-nexos-web/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

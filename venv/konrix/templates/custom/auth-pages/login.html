@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "partials/title-meta.html" with title="Login" %}
+
+{% include "partials/head-css.html" %}
+<style>
+    .background-div {
+        width: 100%; /* Ajuste conforme necessário */
+        height: 100%; /* Ajuste conforme necessário */
+        background-image: url("{% static 'images/main-background.png' %}");
+        background-size: cover; /* Faz com que a imagem cubra toda a div */
+        background-position: center; /* Centraliza a imagem */
+    }
+</style>
+
+<body>
+
+    <div class="background-div">
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="h-screen w-screen flex justify-center items-center">
+
+            <div class="2xl:w-1/4 lg:w-1/3 md:w-1/2 w-full">
+                <div class="card overflow-hidden sm:rounded-md rounded-none" style="background-color: rgba(0, 0, 0, 0.42);">
+                    <div class="p-6">
+                        <a href="{% url 'index' %}" class="flex justify-center items-center">
+                            <img class="dark:hidden" style="height: 280px; margin-bottom: -2cm; margin-left: -1cm;" src="{% static 'images/logo-dark.png' %}" alt="">
+                        </a>                        
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-white dark:text-gray-200 mb-2"
+                                for="LoggingEmailAddress">Email</label>
+                            <input id="LoggingEmailAddress" class="form-input" type="email"
+                                placeholder="Digite o seu email">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-white dark:text-gray-200 mb-2"
+                                for="loggingPassword">Senha</label>
+                            <input id="loggingPassword" class="form-input" type="password"
+                                placeholder="Digite a sua senha">
+                        </div>
+
+                        <div class="flex justify-center mb-6">
+                            <button class="btn w-full text-white" style="background-color: #55B6D1;"> Entrar </button>
+                        </div>
+
+                        <div class="flex items-center my-6">
+                            <div class="flex-auto mt-px border-t border-dashed border-gray-200 dark:border-slate-700">
+                            </div>
+                            <div class="mx-4 text-secondary">Ou</div>
+                            <div class="flex-auto mt-px border-t border-dashed border-gray-200 dark:border-slate-700">
+                            </div>
+                        </div>
+
+                        <p class="text-gray-500 dark:text-gray-400 text-center">Não tem uma conta?<a
+                                href="register" style="color: #55B6D1;" class="text-primary ms-1"><b>Cadastre-se</b></a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
