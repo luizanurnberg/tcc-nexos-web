@@ -22,8 +22,9 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path("", lambda request: redirect('login', permanent=False), name="index"),
+    path("", lambda request: redirect('login', permanent=False), name="login"),
 
+    path("dashboard", view=index_view, name="index"),
     #Apps
     path("apps/" , include("apps.urls")),
 

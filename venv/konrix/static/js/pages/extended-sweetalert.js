@@ -140,7 +140,7 @@ if (document.getElementById("sweetalert-image"))
         Swal.fire({
             title: 'Sweet!',
             text: 'Modal with a custom image.',
-            imageUrl: 'assets/images/logo-sm.png',
+            imageUrl: 'assets/images/logo.png',
             imageHeight: 40,
             confirmButtonClass: 'btn bg-primary text-white w-xs mt-2',
             buttonsStyling: false,
