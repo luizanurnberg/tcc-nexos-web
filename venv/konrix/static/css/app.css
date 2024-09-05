@@ -77,7 +77,7 @@ html[data-topbar-color=light] {
 
 html[data-topbar-color=dark],
 html[data-mode=dark][data-topbar-color=light] {
-  --tw-topbar-bg: rgb(30, 41, 59);
+  --tw-topbar-bg: rgb(0, 0, 0);
   --tw-topbar-item-color: rgb(131, 145, 162);
   --tw-topbar-item-active-bg: rgb(70, 79, 91);
   --tw-topbar-item-active-color: rgb(188, 206, 228);

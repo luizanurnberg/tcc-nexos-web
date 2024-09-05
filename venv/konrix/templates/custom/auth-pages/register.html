@@ -18,32 +18,32 @@
 </style>
 
 <body>
-    <div class="background-div">
+    <div class="bg-gradient-to-r from-rose-100 to-blue-500 from-fuchsia-500 to-teal-100 dark:from-gray-700 dark:via-gray-900 to-blue-500 dark:to-black">
+
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
 
         <div class="h-screen w-screen flex justify-center items-center">
-
             <div class="2xl:w-1/4 lg:w-1/3 md:w-1/2 w-full">
-                <div class="card overflow-hidden sm:rounded-md rounded-none" style="background-color: rgba(0, 0, 0, 0.42);">
+                <div class="card overflow-hidden sm:rounded-md rounded-none">
                     <div class="p-6">
                         <a href="{% url 'index' %}" class="flex justify-center items-center">
-                            <img style="height: 280px; margin-bottom: -2cm; margin-left: -1cm;" src="{% static 'images/logo-dark.png' %}" alt="">
-                        </a>
-
+                            <img style="height: 100px; margin-left: -0.5cm;" class="h-6 block dark:hidden" src="{% static 'images/logo-dark.png' %}" alt="">
+                            <img style="height: 100px; margin-left: -0.5cm;" class="h-6 hidden dark:block" src="{% static 'images/logo-light.png' %}" alt="">
+                        </a>            
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-white dark:text-gray-200 mb-2" for="LoggingEmailAddress">Nome</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="LoggingEmailAddress">Nome</label>
                             <input id="LoggingEmailAddress" class="form-input" type="text" placeholder="Digite seu nome" >
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-white dark:text-gray-200 mb-2" for="LoggingEmailAddress">Email</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="LoggingEmailAddress">Email</label>
                             <input id="LoggingEmailAddress" class="form-input" type="email" placeholder="Digite o seu email">
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-white dark:text-gray-200 mb-2" for="loggingPassword">Senha</label>
+                <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="loggingPassword">Senha</label>
                             <input id="loggingPassword" class="form-input" type="password" placeholder="Digite a sua senha">
                         </div>
 
