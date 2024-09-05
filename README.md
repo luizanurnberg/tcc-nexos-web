@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="venv/konrix/static/images/logo.png" alt="NEXOS Logo" width="80" height="80">
+</p>
+
 # NEXOS (Next Rlease Optimization System) - Front
 
 Repositório referente ao front do trabalho de conclusão de curso.
