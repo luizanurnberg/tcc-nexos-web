@@ -8,6 +8,7 @@
 
 <!-- Dropzone Plugin Css -->
 <link href="{% static '/libs/dropzone/dropzone.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'js/pages/project-create.js' %}"></script>
 
 {% endblock extra_css %}
 
@@ -21,9 +22,6 @@
         <div class="card p-6">
             <div class="flex justify-between items-center mb-4">
                 <p class="card-title">Informações gerais</p>
-                <div class="inline-flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 w-9 h-9">
-                    <i class="mgc_transfer_line"></i>
-                </div>
             </div>
 
             <div class="flex flex-col gap-3">
@@ -44,7 +42,7 @@
                         <label for="budget" class="mb-2 block">Custo <span class="text-red-500">*</span></label>
                         <div class="flex items-center">
                             <span class="mr-3" style="margin-right: 0.2cm;">R$</span>
-                            <input type="number" id="budget" class="form-input"
+                            <input type="number" id="project-budget" class="form-input"
                                 placeholder="Digite o custo máximo a ser gasto" min="0" step="0.01">
                         </div>
                     </div>
@@ -52,13 +50,14 @@
                     <div class="flex-1">
                         <label for="select-label" class="mb-2 block">Tempo de geração <span
                                 class="text-red-500">*</span>
-                                <span class="info-icon">
-                                    <span class="info-icon-tooltip">
-                                        Atenção! o tempo é proporcional a precisão da Release, defina o mesmo conforme a sua necessidade
-                                    </span>
+                            <span class="info-icon">
+                                <span class="info-icon-tooltip">
+                                    Atenção! o tempo é proporcional a precisão da Release, defina o mesmo conforme a sua
+                                    necessidade
                                 </span>
+                            </span>
                         </label>
-                        <select id="select-label" class="form-select">
+                        <select id="project-select-time" class="form-select">
                             <option selected>Selecione uma opção</option>
                             <option>2 minutos</option>
                             <option>15 minutos</option>
@@ -68,44 +67,117 @@
                     </div>
                 </div>
 
-                <div class="flex justify-center gap-4" style="margin-top: 1%;">
-                    <button type="button"
+                <div class="flex justify-end gap-4" style="margin-top: 1%;">
+                    <button type="button" id="btn-add-requirements"
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-600 focus:outline-none">
                         Adicionar requisitos
                     </button>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <!-- <div class="lg:col-span-2 space-y-6">
-        <div class="relative">
-            <label for="budget" class="mb-2 block">Custo <span class="text-red-500">*</span></label>
-            <div class="flex items-center">
-                <span class="mr-3" style="margin-right: 0.2cm;">R$</span>
-                <input type="number" id="budget" class="form-input" placeholder="Digite o custo máximo a ser gasto" min="0" step="0.01">
+    <div class="lg:col-span-2 space-y-6" id="requirement-div" style="display: none;">
+        <div class="card p-6">
+            <div class="flex justify-between items-center mb-4">
+                <p class="card-title">Requisito</p>
+                <div class="flex justify-end gap-3">
+                    <button type="button" id="btn-save-requirement"
+                        class="inline-flex items-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none">
+                        +
+                    </button>
+                    <button type="button" id="btn-cancel-requirement"
+                        class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none">
+                        x
+                    </button>
+                </div>
             </div>
-        </div>      
-    </div> -->
 
-    <div class="lg:col-span-4 mt-5">
-        <div class="flex justify-end gap-3">
-            <button type="button"
-                class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none">
-                Cancelar
-            </button>
-            <button type="button"
-                class="inline-flex items-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none">
-                Gerar
-            </button>
+            <div class="flex flex-col gap-3">
+                <div class="">
+                    <label for="requirement-name" class="mb-2 block">Título <span
+                            class="text-red-500">*</span></label></label>
+                    <input type="email" id="requirement-name" class="form-input" placeholder="Título do requisito"
+                        aria-describedby="input-helper-text">
+                </div>
+
+                <div class="">
+                    <label for="requirement-description" class="mb-2 block">Descrição</label>
+                    <textarea id="requirement-description" class="form-input" rows="4"></textarea>
+                </div>
+
+                <div class="flex space-x-4">
+                    <div class="relative flex-1">
+                        <label for="requirement-budget" class="mb-2 block">Custo <span
+                                class="text-red-500">*</span></label>
+                        <div class="flex items-center">
+                            <span class="mr-3" style="margin-right: 0.2cm;">R$</span>
+                            <input type="number" id="requirement-budget" class="form-input"
+                                placeholder="Custo do requisito" min="0" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="flex-1">
+                        <label for="requirement-client" class="mb-2 block">Cliente <span
+                                class="text-red-500">*</span></label></label>
+                        <input type="email" id="requirement-client" class="form-input"
+                            placeholder="Cliente do requisito" aria-describedby="input-helper-text">
+                    </div>
+                </div>
+
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <label for="client-select-matter" class="mb-2 block">Importância do cliente <span
+                                class="text-red-500">*</span>
+                        </label>
+                        <select id="client-select-matter" class="form-select">
+                            <option selected>Selecione uma opção</option>
+                            <option>Pouca importância</option>
+                            <option>Média importância</option>
+                            <option>Muita importância</option>
+                        </select>
+                    </div>
+                    <div class="flex-1">
+                        <label for="requirement-select-matter" class="mb-2 block">Importância do requisito para o
+                            cliente <span class="text-red-500">*</span>
+                        </label>
+                        <select id="requirement-select-matter" class="form-select">
+                            <option selected>Selecione uma opção</option>
+                            <option>Pouca importância</option>
+                            <option>Média importância</option>
+                            <option>Muita importância</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-4" style="margin-top: 1%;">
+                <button type="button" id="btn-add-requirements-next"
+                    class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-600 focus:outline-none">
+                    Adicionar dependências
+                </button>
+            </div>
         </div>
+
+
+        <!-- <div class="lg:col-span-4 mt-5">
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btn-save"
+                    class="inline-flex items-center rounded-md border border-transparent bg-green-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none">
+                    Gerar
+                </button>
+                <button type="button" id="btn-cancel"
+                    class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none">
+                    Cancelar
+                </button>
+            </div>
+        </div> -->
     </div>
-</div>
-{% endblock content %}
+    {% endblock content %}
 
-{% block extra_js %}
+    {% block extra_js %}
 
-<!-- Dropzone js -->
-<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
+    <!-- Dropzone js -->
+    <script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
 
-{% endblock extra_js %}
+    {% endblock extra_js %}
