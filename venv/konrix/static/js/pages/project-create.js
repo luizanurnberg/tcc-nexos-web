@@ -1,119 +1,131 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
     const requirementsArray = [];
+    let clientsCounter = 0;
+    let reqCounter = 0;
+
     const elements = {
-        addRequirementsBtn: document.getElementById('btn-add-requirements'),
-        cancelBtn: document.getElementById('btn-cancel'),
-        saveBtn: document.getElementById('btn-save'),
-        saveRequirementBtn: document.getElementById('btn-save-requirement'),
-        cancelRequirementBtn: document.getElementById('btn-cancel-requirement'),
-        requirementDiv: document.getElementById('requirement-div'),
-        requirementName: document.getElementById('requirement-name'),
-        requirementDescription: document.getElementById('requirement-description'),
-        requirementBudget: document.getElementById('requirement-budget'),
-        requirementClient: document.getElementById('requirement-client'),
-        clientSelectMatter: document.getElementById('client-select-matter'),
-        requirementSelectMatter: document.getElementById('requirement-select-matter'),
-        projectName: document.getElementById('project-name'),
-        projectDescription: document.getElementById('project-description'),
-        projectBudget: document.getElementById('project-budget'),
-        projectSelectTime: document.getElementById('project-select-time'),
-        modalBody: document.getElementById('modal-table'),
-        addRequirementsDependenciesBtn: document.getElementById('btn-add-requirements'),
+        cancelBtn: $('#btn-cancel'),
+        saveBtn: $('#btn-save'),
+        saveRequirementBtn: $('#btn-save-requirement'),
+        cancelRequirementBtn: $('#btn-cancel-requirement'),
+        requirementDiv: $('#requirement-div'),
+        requirementName: $('#requirement-name'),
+        requirementDescription: $('#requirement-description'),
+        requirementBudget: $('#requirement-budget'),
+        requirementClient: $('#requirement-client'),
+        clientSelectMatter: $('#client-select-matter'),
+        requirementSelectMatter: $('#requirement-select-matter'),
+        projectName: $('#project-name'),
+        projectDescription: $('#project-description'),
+        projectBudget: $('#project-budget'),
+        projectSelectTime: $('#project-select-time'),
+        modalBody: $('#modal-table'),
+        addRequirementsDependenciesBtn: $('#btn-add-requirements-dep'),
     };
 
-    elements.addRequirementsBtn.addEventListener('click', toggleRequirementDiv);
-    elements.saveRequirementBtn.addEventListener('click', addRequirement);
-    elements.cancelRequirementBtn.addEventListener('click', clearRequirementFields);
-    //elements.cancelBtn.addEventListener('click', () => console.log("Botão 'Cancelar' clicado"));
-    //elements.saveBtn.addEventListener('click', saveProject);
+    elements.saveRequirementBtn.on('click', addRequirement);
+    elements.cancelRequirementBtn.on('click', clearRequirementFields);
+    elements.saveBtn.on('click', saveProject);
 
-    // Função para mostrar/ocultar a div de requisitos
-    function toggleRequirementDiv() {
-        elements.requirementDiv.style.display =
-            elements.requirementDiv.style.display === 'none' || elements.requirementDiv.style.display === ''
-                ? 'block'
-                : 'none';
-    }
-
-    // Função para limpar os campos de requisitos
     function clearRequirementFields() {
-        elements.requirementName.value = '';
-        elements.requirementDescription.value = '';
-        elements.requirementBudget.value = '';
-        elements.requirementClient.value = '';
-        elements.clientSelectMatter.value = 'Selecione uma opção';
-        elements.requirementSelectMatter.value = 'Selecione uma opção';
+        elements.requirementName.val('');
+        elements.requirementDescription.val('');
+        elements.requirementBudget.val('');
+        elements.requirementClient.val('');
+        elements.clientSelectMatter.val('Selecione uma opção');
+        elements.requirementSelectMatter.val('Selecione uma opção');
     }
 
-    // Função para adicionar um requisito ao array
+    function generateRandomId() {
+        return 'req-' + Math.random().toString(36).substr(2, 9);
+    }
+
     function addRequirement() {
-        requirementCounter++;
         const requirement = {
-            name: elements.requirementName.value,
-            description: elements.requirementDescription.value,
-            budget: elements.requirementBudget.value,
-            client: elements.requirementClient.value,
-            clientImportance: elements.clientSelectMatter.value,
-            requirementImportance: elements.requirementSelectMatter.value
+            id: generateRandomId(),
+            name: elements.requirementName.val(),
+            description: elements.requirementDescription.val(),
+            budget: elements.requirementBudget.val(),
+            client: elements.requirementClient.val(),
+            clientImportance: elements.clientSelectMatter.val(),
+            requirementImportance: elements.requirementSelectMatter.val()
         };
 
         requirementsArray.push(requirement);
+        clientsCounter++;
+        reqCounter++;
         clearRequirementFields();
         updateModalContent();
     }
 
-    // Função para atualizar o conteúdo do modal
     function updateModalContent() {
-        const thead = document.getElementById('modal-thead');
-        const tbody = document.getElementById('modal-tbody');
-
-        thead.querySelector('tr').innerHTML = '<th scope="col" class="py-3 ps-4"></th>';
-
-        tbody.innerHTML = '';
-
+        const thead = $('#modal-thead');
+        const tbody = $('#modal-tbody');
+    
+        thead.find('tr').html('<th scope="col" class="py-3 ps-4"></th>');
+        tbody.empty();
+    
         if (requirementsArray.length > 0) {
             requirementsArray.forEach(req => {
-                thead.querySelector('tr').innerHTML += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">${req.name}</th>`;
+                thead.find('tr').append(`<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">${req.name}</th>`);
             });
-
+    
             requirementsArray.forEach((req, rowIndex) => {
                 let row = `<tr><td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">${req.name}</td>`;
                 requirementsArray.forEach((_, colIndex) => {
-                    row += `<td class="py-3 ps-4"><input type="checkbox" id="checkbox-${rowIndex}-${colIndex}" class="form-checkbox rounded"></td>`;
+                    if (rowIndex === colIndex) {
+                        row += `<td class="py-3 ps-4"><span class="material-symbols-rounded">block</span></td>`;
+                    } else {
+                        row += `<td class="py-3 ps-4"><input class="form-checkbox rounded-full text-primary" type="checkbox" id="checkbox-${rowIndex}-${colIndex}"></td>`;
+                    }
                 });
                 row += '</tr>';
-                tbody.innerHTML += row;
+                tbody.append(row);
             });
         } else {
-            tbody.innerHTML = '<tr><td colspan="100%" class="py-3 text-center text-gray-500">Nenhum requisito adicionado. Adicione requisitos para ver a matriz de dependências.</td></tr>';
+            tbody.html('<tr><td colspan="100%" class="py-3 text-center text-gray-500">Nenhum requisito adicionado. Adicione requisitos para ver a matriz de dependências.</td></tr>');
         }
     }
+    
 
-    // Função para salvar os dados do projeto
+    function generateDependencyMatrix() {
+        const dependencyMatrix = [];
+
+        requirementsArray.forEach((req, rowIndex) => {
+            const row = [];
+            requirementsArray.forEach((_, colIndex) => {
+                const checkbox = $(`#checkbox-${rowIndex}-${colIndex}`);
+                row.push(checkbox.is(':checked') ? 1 : 0);
+            });
+            dependencyMatrix.push(row);
+        });
+
+        return dependencyMatrix;
+    }
+
     function saveProject() {
         const data = {
-            projectName: elements.projectName.value,
-            projectDescription: elements.projectDescription.value,
-            projectBudget: elements.projectBudget.value,
-            projectSelectTime: elements.projectSelectTime.value,
-            requirements: requirementsArray
+            projectName: elements.projectName.val(),
+            projectDescription: elements.projectDescription.val(),
+            projectBudget: elements.projectBudget.val(),
+            projectSelectTime: elements.projectSelectTime.val(),
+            requirements: requirementsArray,
+            dependencyMatrix: generateDependencyMatrix(),
+            numberOfReq: reqCounter,
+            numberOfClients: clientsCounter,
         };
 
-        fetch('/seu-endpoint', {
+        $.ajax({
+            url: `${window.config.api}/release/insert`,
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                console.log('Sucesso:', response);
             },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Sucesso:', data);
-                // Lógica adicional após o envio bem-sucedido
-            })
-            .catch(error => {
+            error: function (error) {
                 console.error('Erro:', error);
-                // Lógica adicional para tratamento de erro
-            });
-    }
+            }
+        });
+    }    
 });
