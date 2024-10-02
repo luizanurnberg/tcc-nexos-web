@@ -1,7 +1,7 @@
 $(document).ready(function () {
     const requirementsArray = [];
-    let clientsCounter = 0;
-    let reqCounter = 0;
+    let clientsCounter = 1;
+    let reqCounter = 1;
 
     const elements = {
         cancelBtn: $('#btn-cancel'),
@@ -36,19 +36,15 @@ $(document).ready(function () {
         elements.requirementSelectMatter.val('Selecione uma opção');
     }
 
-    function generateRandomId() {
-        return 'req-' + Math.random().toString(36).substr(2, 9);
-    }
-
     function addRequirement() {
         const requirement = {
-            id: generateRandomId(),
+            id: reqCounter,
             name: elements.requirementName.val(),
             description: elements.requirementDescription.val(),
-            budget: elements.requirementBudget.val(),
+            budget: parseFloat(elements.requirementBudget.val()),
             client: elements.requirementClient.val(),
-            clientImportance: elements.clientSelectMatter.val(),
-            requirementImportance: elements.requirementSelectMatter.val()
+            clientImportance: parseInt(elements.clientSelectMatter.val()),
+            requirementImportance: parseInt(elements.requirementSelectMatter.val())
         };
 
         requirementsArray.push(requirement);
@@ -89,30 +85,30 @@ $(document).ready(function () {
     
 
     function generateDependencyMatrix() {
-        const dependencyMatrix = [];
-
+        const dependencyList = [];
+    
         requirementsArray.forEach((req, rowIndex) => {
-            const row = [];
-            requirementsArray.forEach((_, colIndex) => {
+            requirementsArray.forEach((dependentReq, colIndex) => {
                 const checkbox = $(`#checkbox-${rowIndex}-${colIndex}`);
-                row.push(checkbox.is(':checked') ? 1 : 0);
+                if (checkbox.is(':checked')) {
+                    dependencyList.push(` ${dependentReq.id} ${req.id}`);
+                }
             });
-            dependencyMatrix.push(row);
         });
-
-        return dependencyMatrix;
+    
+        return dependencyList;
     }
-
+    
     function saveProject() {
         const data = {
             projectName: elements.projectName.val(),
             projectDescription: elements.projectDescription.val(),
-            projectBudget: elements.projectBudget.val(),
-            projectSelectTime: elements.projectSelectTime.val(),
+            projectBudget: parseFloat(elements.projectBudget.val()),
+            projectSelectTime: parseInt(elements.projectSelectTime.val()),
             requirements: requirementsArray,
             dependencyMatrix: generateDependencyMatrix(),
-            numberOfReq: reqCounter,
-            numberOfClients: clientsCounter,
+            numberOfReq: parseInt(reqCounter),
+            numberOfClients: parseInt(clientsCounter),
         };
 
         $.ajax({
