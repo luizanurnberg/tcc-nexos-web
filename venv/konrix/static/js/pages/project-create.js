@@ -1,7 +1,7 @@
 $(document).ready(function () {
     const requirementsArray = [];
-    let clientsCounter = 1;
-    let reqCounter = 1;
+    let clientsCounter = 0;
+    let reqCounter = 0;
 
     const elements = {
         cancelBtn: $('#btn-cancel'),
@@ -42,6 +42,7 @@ $(document).ready(function () {
             name: elements.requirementName.val(),
             description: elements.requirementDescription.val(),
             budget: parseFloat(elements.requirementBudget.val()),
+            clientId: clientsCounter,
             client: elements.requirementClient.val(),
             clientImportance: parseInt(elements.clientSelectMatter.val()),
             requirementImportance: parseInt(elements.requirementSelectMatter.val())
