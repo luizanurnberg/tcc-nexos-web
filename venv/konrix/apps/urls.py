@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.views import calendar_view , tickets_view , file_manager_view , kanban_view , list_view , detail_view , create_view
+from apps.views import calendar_view , tickets_view , file_manager_view , kanban_view , list_view , detail_view , create_view, client_view
 
 urlpatterns = [
 
@@ -14,5 +14,6 @@ urlpatterns = [
     path("detail", view=detail_view, name="detail"),
     path("create", view=create_view, name="create"),
 
-
+    #Client
+    path("register-client", view=client_view, name="register-client"),
 ]

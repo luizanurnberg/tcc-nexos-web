@@ -34,12 +34,21 @@
                 </a>
             </li>
 
-            <!-- <li class="menu-item">
-                <a href="{% url 'kanban' %}" class="menu-link">
+            <li class="menu-item">
+                <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                     <span class="menu-icon"><i class="mgc_task_2_line"></i></span>
-                    <span class="menu-text">Kanban</span>
+                    <span class="menu-text"> Cliente </span>
+                    <span class="menu-arrow"></span>
                 </a>
-            </li> -->
+
+                <ul class="sub-menu hidden">
+                    <li class="menu-item">
+                        <a href="{% url 'register-client' %}" class="menu-link">
+                            <span class="menu-text">Cadastro</span>
+                        </a>
+                    </li>   
+                </ul>
+            </li>
 
             <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
@@ -161,7 +170,7 @@
                 </ul>
             </li>
 
-            <li class="menu-item">
+            <!-- <li class="menu-item">
                 <a href="javascript:void(0)" data-fc-type="collapse" class="menu-link">
                     <span class="menu-icon"><i class="mgc_layout_line"></i></span>
                     <span class="menu-text"> Layout </span>
@@ -195,7 +204,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
             <li class="menu-title">Elements</li>
 

@@ -5,7 +5,7 @@ $(document).ready(function () {
 
     const elements = {
         cancelBtn: $('#btn-cancel'),
-        saveBtn: $('#btn-save'),
+        saveBtn: $('#sweetalert-success'),
         saveRequirementBtn: $('#btn-save-requirement'),
         cancelRequirementBtn: $('#btn-cancel-requirement'),
         requirementDiv: $('#requirement-div'),
@@ -26,6 +26,19 @@ $(document).ready(function () {
     elements.saveRequirementBtn.on('click', addRequirement);
     elements.cancelRequirementBtn.on('click', clearRequirementFields);
     elements.saveBtn.on('click', saveProject);
+
+    function cleanAllFields(){
+        elements.projectName.val('');
+        elements.projectBudget.val('');
+        elements.projectDescription.val('');
+        elements.projectSelectTime.val('Selecione uma opção');
+        elements.requirementName.val('');
+        elements.requirementDescription.val('');
+        elements.requirementBudget.val('');
+        elements.requirementClient.val('');
+        elements.clientSelectMatter.val('Selecione uma opção');
+        elements.requirementSelectMatter.val('Selecione uma opção');
+    }
 
     function clearRequirementFields() {
         elements.requirementName.val('');
@@ -124,5 +137,7 @@ $(document).ready(function () {
                 console.error('Erro:', error);
             }
         });
+
+        cleanAllFields();
     }    
 });

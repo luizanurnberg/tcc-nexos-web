@@ -20,3 +20,6 @@ kanban_view = AppsView.as_view(template_name="apps/kanban.html")
 list_view = AppsView.as_view(template_name="apps/project/list.html")
 detail_view = AppsView.as_view(template_name="apps/project/detail.html")
 create_view = AppsView.as_view(template_name="apps/project/create.html")
+
+#Client
+client_view = AppsView.as_view(template_name="apps/client/register-client.html")
