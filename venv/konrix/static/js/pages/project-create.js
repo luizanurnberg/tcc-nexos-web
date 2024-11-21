@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const requirementsArray = [];
+    let requirementsArray = [];
     let clientsCounter = 0;
     let reqCounter = 0;
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
     elements.cancelRequirementBtn.on('click', clearRequirementFields);
     elements.saveBtn.on('click', saveProject);
 
-    function cleanAllFields(){
+    function cleanAllFields() {
         elements.projectName.val('');
         elements.projectBudget.val('');
         elements.projectDescription.val('');
@@ -38,6 +38,13 @@ $(document).ready(function () {
         elements.requirementClient.val('');
         elements.clientSelectMatter.val('Selecione uma opção');
         elements.requirementSelectMatter.val('Selecione uma opção');
+
+        elements.modalBody.find('#modal-thead').find('tr').html('<th scope="col" class="py-3 ps-4"></th>');
+        elements.modalBody.find('#modal-tbody').empty();
+
+        requirementsArray = [];
+        clientsCounter = 0;
+        reqCounter = 0;
     }
 
     function clearRequirementFields() {
@@ -71,15 +78,15 @@ $(document).ready(function () {
     function updateModalContent() {
         const thead = $('#modal-thead');
         const tbody = $('#modal-tbody');
-    
+
         thead.find('tr').html('<th scope="col" class="py-3 ps-4"></th>');
         tbody.empty();
-    
+
         if (requirementsArray.length > 0) {
             requirementsArray.forEach(req => {
                 thead.find('tr').append(`<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">${req.name}</th>`);
             });
-    
+
             requirementsArray.forEach((req, rowIndex) => {
                 let row = `<tr><td class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">${req.name}</td>`;
                 requirementsArray.forEach((_, colIndex) => {
@@ -93,14 +100,14 @@ $(document).ready(function () {
                 tbody.append(row);
             });
         } else {
-            tbody.html('<tr><td colspan="100%" class="py-3 text-center text-gray-500">Nenhum requisito adicionado. Adicione requisitos para ver a matriz de dependências.</td></tr>');
+            tbody.empty();
         }
     }
-    
+
 
     function generateDependencyMatrix() {
         const dependencyList = [];
-    
+
         requirementsArray.forEach((req, rowIndex) => {
             requirementsArray.forEach((dependentReq, colIndex) => {
                 const checkbox = $(`#checkbox-${rowIndex}-${colIndex}`);
@@ -109,12 +116,19 @@ $(document).ready(function () {
                 }
             });
         });
-    
+
         return dependencyList;
     }
-    
+
+    function generateNumericId() {
+        const timestamp = Date.now().toString();
+        const randomNumbers = Math.floor(Math.random() * 1000000).toString().padStart(4, '0');
+        return timestamp + randomNumbers;
+    }
+
     function saveProject() {
         const data = {
+            projectId: generateNumericId(),
             projectName: elements.projectName.val(),
             projectDescription: elements.projectDescription.val(),
             projectBudget: parseFloat(elements.projectBudget.val()),
@@ -123,6 +137,10 @@ $(document).ready(function () {
             dependencyMatrix: generateDependencyMatrix(),
             numberOfReq: parseInt(reqCounter),
             numberOfClients: parseInt(clientsCounter),
+            status: {
+                ID: 1,
+                NAME: "Em geração"
+            }
         };
 
         $.ajax({
@@ -139,5 +157,5 @@ $(document).ready(function () {
         });
 
         cleanAllFields();
-    }    
+    }
 });
