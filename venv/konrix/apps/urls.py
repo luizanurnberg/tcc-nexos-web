@@ -8,6 +8,7 @@ urlpatterns = [
     path("tickets", view=tickets_view, name="tickets"),
     path("file-manager", view=file_manager_view, name="file-manager"),
     path("kanban", view=kanban_view, name="kanban"),
+    path("kanban/<str:id>/", view=kanban_view, name="kanbanProject"),
 
     #Project
     path("list", view=list_view, name="list"),

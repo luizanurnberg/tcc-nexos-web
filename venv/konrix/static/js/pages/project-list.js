@@ -38,10 +38,11 @@ $(document).ready(function () {
 
             const projectHtml = `
         <div class="card" data-id="${project.ID}">
-            <a href="#">
                 <div class="card-header">
                     <div class="flex justify-between items-center">
-                        <h5 class="card-title">${project.TITLE}</h5>
+                        <a href="/apps/kanban/${project.ID}">
+                            <h5 class="card-title">${project.TITLE}</h5>
+                        </a>
                         <i class="mgc_delete_2_fill cursor-pointer text-red-500 delete-icon">
                             <div id="MessageSweetAlert" class="hidden w-full overflow-hidden transition-[height] duration-300">
                                 <pre class="language-html h-auto">
@@ -54,8 +55,10 @@ $(document).ready(function () {
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <div class="py-3 px-6">
+                <div class="py-3 px-6">
+                <a href="/apps/kanban/${project.ID}">
                         <h5 class="my-2"><a href="#" class="text-slate-900 dark:text-slate-200">${project.DESCRIPTION || 'Sem descrição'}</a></h5>
+                        </a>
                     </div>
                 </div>
                 <div class="border-t p-5 border-gray-300 dark:border-gray-700">
@@ -73,7 +76,7 @@ $(document).ready(function () {
                         <div class="flex justify-between items-center" style="margin-left: 10%">
                         <a href="#" class="text-sm">
                                 <i class="mgc_pig_money_line text-lg me-2"></i>
-                                <span class="align-text-bottom">Valor: ${project.TOTAL_BUDGET}</span>
+                                <span class="align-text-bottom">R$: ${project.TOTAL_BUDGET}</span>
                         </a>
                             <div class="${statusClass} text-xs text-white rounded-md py-1 px-4 font-medium" role="alert">
                                 <span>${project.STATUS.NAME}</span>
@@ -81,7 +84,6 @@ $(document).ready(function () {
                         </div>
                     </div>
                 </div>
-            </a>
         </div>
     `;
             container.append(projectHtml);
