@@ -27,8 +27,8 @@ if (document.getElementById("sweetalert-title"))
 if (document.getElementById("sweetalert-success"))
     document.getElementById("sweetalert-success").addEventListener("click", function () {
         Swal.fire({
-            title: 'Enviado para geração!',
-            text: 'Sua release deve ficar pronta em alguns minutos',
+            title: 'Sucesso!',
+            text: 'Sua operação foi realizada com sucesso',
             icon: 'success',
             showCancelButton: false,
             confirmButtonClass: 'inline-flex items-center btn bg-info/25 text-info hover:bg-info hover:text-white',
