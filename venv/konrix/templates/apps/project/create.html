@@ -77,12 +77,11 @@
                                 class=" inline-flex items-center btn bg-info/25 text-info hover:bg-info hover:text-white">Adicionar
                                 dependências</button>
                             <div
-                                class="w-full h-full mt-5 fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden">
+                                class="w-full h-full fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden">
                                 <div
-                                    class="sm:max-w-7xl mt-5 fc-modal-open:scale-100 duration-300 scale-90 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
-                                    <div
-                                        class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
-                                        <h3 class="font-medium text-gray-800 dark:text-white text-lg">
+                                    class="fc-modal-open:opacity-100 duration-500 h-screen w-screen opacity-0 ease-out transition-all flex flex-col bg-white p-8 dark:bg-slate-800 dark:border-gray-700">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="font-medium text-gray-800 dark:text-white text-2xl">
                                             Matriz de dependências de requisitos
                                         </h3>
                                         <button
@@ -91,25 +90,20 @@
                                             <span class="material-symbols-rounded">close</span>
                                         </button>
                                     </div>
-                                    <div class="px-4 py-8 overflow-y-auto">
-                                        <div class="overflow-x-auto">
-                                            <div class="min-w-full inline-block align-middle">
-                                                <div class="border rounded-lg overflow-hidden dark:border-gray-700">
-                                                    <table id="modal-table"
-                                                        class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                                        <thead id="modal-thead" class="bg-gray-50 dark:bg-gray-700">
-                                                            <tr>
-                                                                <!-- Os nomes dos requisitos serão adicionados aqui -->
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="modal-tbody"
-                                                            class="divide-y divide-gray-200 dark:divide-gray-700">
-                                                            <!-- As linhas serão adicionadas dinamicamente aqui -->
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                    <div class="overflow-y-auto mt-3">
+                                        <div class="bg-info/25 text-info text-sm rounded-md p-2" role="alert">
+                                            <span class="font-bold">Alerta!</span> apenas defina as dependências após incluir todos os requisitos.
                                         </div>
+                                        <table id="modal-table"
+                                            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                            <thead id="modal-thead" class="bg-gray-50 dark:bg-gray-700">
+                                                <tr>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="modal-tbody"
+                                                class="divide-y divide-gray-200 dark:divide-gray-700">
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

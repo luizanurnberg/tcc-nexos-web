@@ -13,15 +13,6 @@
 <script src="{% static 'js/pages/apps-kanban.js' %}"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Sweet Alerts js -->
-<script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
-
-<!-- Sweet alert init js-->
-<script src="{% static 'js/pages/extended-sweetalert.js' %}"></script>
-
-<!-- Dropzone js -->
-<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
 {% endblock extra_css %}
 
 {% block pagetitle %}
@@ -78,5 +69,13 @@
 {% endblock content %}
 
 {% block extra_js %}
+<!-- Sweet Alerts js -->
+<script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
+
+<!-- Sweet alert init js-->
+<script src="{% static 'js/pages/extended-sweetalert.js' %}"></script>
+
+<!-- Dropzone js -->
+<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
 
 {% endblock extra_js %}
