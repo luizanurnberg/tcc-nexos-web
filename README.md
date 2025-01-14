@@ -16,7 +16,7 @@ Repositório referente ao front do trabalho de conclusão de curso.
 
 
 
-- acessar tcc-nexos-web/venv/konrix e executar python3 manage.py runserver
+- acessar tcc-nexos-web/venv/konrix e executar python3 -B manage.py runserver
 - executar sempre o pip freeze > requirements.txt depois de instalar dependencias
 
 - source venv/bin/activate para ativar a venv
