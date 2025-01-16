@@ -14,7 +14,7 @@ $(document).ready(function () {
         const name = elements.nameInput.val();
         const email = elements.emailInput.val();
         const password = elements.passwordInput.val();
-        console.log(name, email, password)
+
         if (!name || !email || !password) {
             Swal.fire({
                 title: 'Erro de Validação',
@@ -38,6 +38,9 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
+                const token = response.token;
+                localStorage.setItem('authToken', token);
+
                 Swal.fire({
                     title: 'Registro bem-sucedido!',
                     text: 'Sua conta foi criada com sucesso.',
@@ -45,6 +48,7 @@ $(document).ready(function () {
                     confirmButtonClass: 'btn bg-primary text-white w-xs mt-2',
                     buttonsStyling: false,
                 }).then(() => {
+                    // Redireciona para o dashboard
                     window.location.href = '/dashboard';
                 });
             },

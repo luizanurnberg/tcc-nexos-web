@@ -2,6 +2,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/pages/topbar.js' %}"></script>
+<link href="{% static 'libs/sweetalert2/sweetalert2.min.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static '/libs/dropzone/dropzone.css' %}" rel="stylesheet" type="text/css">
 
 <!-- Topbar Start -->
 <header class="app-header flex items-center px-4 gap-3">
@@ -194,3 +196,16 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+
+<!-- Sweet Alerts js -->
+<script src="{% static 'libs/sweetalert2/sweetalert2.min.js' %}"></script>
+
+<!-- Sweet alert init js-->
+<script src="{% static 'js/pages/extended-sweetalert.js' %}"></script>
+
+<!-- Dropzone js -->
+<script src="{% static 'libs/dropzone/min/dropzone.min.js' %}"></script>
+
+{% endblock extra_js %}

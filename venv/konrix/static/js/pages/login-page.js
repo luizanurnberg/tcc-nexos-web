@@ -33,7 +33,8 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
-                console.log('Login successful:', response);
+                const token = response.token;
+                localStorage.setItem('authToken', token);
                 window.location.href = '/dashboard';
             },
             error: function (error) {
