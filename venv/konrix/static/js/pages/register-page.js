@@ -38,8 +38,10 @@ $(document).ready(function () {
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
-                const token = response.token;
+                const token = response.user.idToken;
+                const uid = response.user.uid;
                 localStorage.setItem('authToken', token);
+                localStorage.setItem('uid', uid);
 
                 Swal.fire({
                     title: 'Registro bem-sucedido!',

@@ -137,22 +137,48 @@ $(document).ready(function () {
             dependencyMatrix: generateDependencyMatrix(),
             numberOfReq: parseInt(reqCounter),
             numberOfClients: parseInt(clientsCounter),
+            user: localStorage.getItem('uid'),
             status: {
                 ID: 1,
                 NAME: "Em geração"
             }
         };
 
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert('Token de autenticação não encontrado. Faça login novamente.');
+            window.location.href = '/custom/login';
+            return;
+        }
+
         $.ajax({
             url: `${window.config.api}/release/insert`,
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(data),
-            success: function (response) {
-                console.log('Sucesso:', response);
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
+            success: function () {
+                localStorage.removeItem('authToken');
+                Swal.fire({
+                    title: 'Sucesso!',
+                    text: 'A release foi criada com sucesso com sucesso.',
+                    icon: 'success',
+                    confirmButtonClass: 'btn bg-primary text-white w-xs mt-2',
+                    buttonsStyling: false,
+                }).then(() => {
+                    window.location.href = '/dashboard';
+                });
             },
             error: function (error) {
-                console.error('Erro:', error);
+                Swal.fire({
+                    title: 'Erro!',
+                    text: 'Não foi possível criar a release. Tente novamente.',
+                    icon: 'error',
+                    confirmButtonClass: 'btn bg-primary text-white w-xs mt-2',
+                    buttonsStyling: false,
+                });
             }
         });
 

@@ -4,11 +4,22 @@ $(document).ready(function () {
     setInterval(listProject, 60000);
 
     function listProject() {
+        const authToken = localStorage.getItem('authToken');
+        const uid = localStorage.getItem('uid');
+        if (!authToken) {
+            alert('Token de autenticação não encontrado. Faça login novamente.');
+            window.location.href = '/custom/login';
+            return;
+        }
+
         $.ajax({
-            url: `${window.config.api}/release/list`,
+            url: `${window.config.api}/release/list?uid=${uid}`,
             method: 'GET',
             contentType: 'application/json',
             dataType: 'json',
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
             success: function (response) {
                 if (response.data && response.data.length) {
                     renderProjects(response.data);
@@ -115,9 +126,19 @@ $(document).ready(function () {
     }
 
     function deleteProject(id) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert('Token de autenticação não encontrado. Faça login novamente.');
+            window.location.href = '/custom/login';
+            return;
+        }
+
         $.ajax({
             url: `${window.config.api}/release/delete/${id}`,
             method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
             success: function (response) {
                 Swal.fire('Excluído!', 'A release foi excluída com sucesso.', 'success');
                 setTimeout(() => {
