@@ -15,9 +15,8 @@ Repositório referente ao front do trabalho de conclusão de curso.
 [![Django](https://skillicons.dev/icons?i=django)](https://www.django.com)
 
 
-
-- acessar tcc-nexos-web/venv/konrix e executar python3 -B manage.py runserver
-- executar sempre o pip freeze > requirements.txt depois de instalar dependencias
-
+## Para executar
 - source venv/bin/activate para ativar a venv
+- executar sempre o pip freeze > requirements.txt depois de instalar dependencias
+- acessar tcc-nexos-web/venv/konrix e executar python3 -B manage.py runserver
 - deactivate para desativar a venv 
