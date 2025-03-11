@@ -7,7 +7,7 @@
 {% block extra_css %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="{% static '/libs/dropzone/dropzone.css' %}" rel="stylesheet" type="text/css">
-<script src="{% static 'js/pages/client-list.js' %}"></script>
+<script src="{% static 'js/pages/client.js' %}"></script>
 <link href="{% static 'libs/sweetalert2/sweetalert2.min.css' %}" rel="stylesheet" type="text/css">
 {% endblock extra_css %}
 
@@ -18,9 +18,6 @@
 {% block content %}
 
 <div class="flex flex-auto flex-col">
-    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-    </div>
-
     <div class="flex justify-between items-center mt-6">
         <div class="relative w-1/2">
             <div class="pointer-events-none absolute top-3.5 start-4 text-gray-900 text-opacity-40 dark:text-gray-200">
@@ -64,15 +61,16 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-4 items-center gap-6">
-                            <label for="client-select-matter" class="text-gray-800 text-sm font-medium inline-block w-32 whitespace-normal">
+                            <label for="client-select-matter"
+                                class="text-gray-800 text-sm font-medium inline-block w-32 whitespace-normal">
                                 Importância <br> do cliente
                             </label>
                             <div class="md:col-span-3">
                                 <select id="client-select-matter" class="form-select" required>
                                     <option selected>Selecione uma opção</option>
-                                    <option value="25">Pouca importância</option>
-                                    <option value="50">Média importância</option>
-                                    <option value="100">Muita importância</option>
+                                    <option value=25>Pouca importância</option>
+                                    <option value=50>Média importância</option>
+                                    <option value=100>Muita importância</option>
                                 </select>
                             </div>
                         </div>
@@ -82,9 +80,63 @@
                     <button
                         class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
                         data-fc-dismiss type="button">Cancelar</button>
-                    <a class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white"
-                        href="javascript:void(0)">Salvar</a>
+                    <a id="btn-save"
+                        class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white">Salvar</a>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="client-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+    </div>
+    <!-- Modal de Edição de Cliente -->
+    <div id="edit-client-modal"
+        class="fixed top-0 left-0 z-50 transition-all duration-500 fc-modal hidden w-full h-full min-h-full items-center fc-modal-open:flex">
+        <div
+            class="fc-modal-open:opacity-100 duration-500 opacity-0 ease-out transition-[opacity] sm:max-w-lg sm:w-full sm:mx-auto flex-col bg-white border shadow-sm rounded-md dark:bg-slate-800 dark:border-gray-700">
+            <div class="flex justify-between items-center py-2.5 px-4 border-b dark:border-gray-700">
+                <h3 class="font-medium text-gray-800 dark:text-white text-lg">
+                    Editar Cliente
+                </h3>
+                <button class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 dark:text-gray-200"
+                    data-fc-dismiss type="button">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+            <div class="px-4 py-8 overflow-y-auto">
+                <form id="edit-client-form" class="flex flex-col gap-3">
+                    <input type="hidden" id="edit-client-id"> <!-- Campo oculto para armazenar o ID do cliente -->
+                    <div class="grid grid-cols-4 items-center gap-6">
+                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Email</label>
+                        <div class="md:col-span-3">
+                            <input type="email" class="form-input" id="edit-client-email" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 items-center gap-6">
+                        <label class="text-gray-800 text-sm font-medium inline-block mb-2">Nome</label>
+                        <div class="md:col-span-3">
+                            <input type="text" class="form-input" id="edit-client-name" placeholder="Nome" required>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 items-center gap-6">
+                        <label class="text-gray-800 text-sm font-medium inline-block w-32 whitespace-normal">
+                            Importância <br> do cliente
+                        </label>
+                        <div class="md:col-span-3">
+                            <select id="edit-client-select-matter" class="form-select" required>
+                                <option value=25>Pouca importância</option>
+                                <option value=50>Média importância</option>
+                                <option value=100>Muita importância</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end items-center gap-4 p-4 border-t dark:border-slate-700">
+                <button
+                    class="py-2 px-5 inline-flex justify-center items-center gap-2 rounded dark:text-gray-200 border dark:border-slate-700 font-medium hover:bg-slate-100 hover:dark:bg-slate-700 transition-all"
+                    data-fc-dismiss type="button">Cancelar</button>
+                <button id="btn-update-client"
+                    class="py-2.5 px-4 inline-flex justify-center items-center gap-2 rounded bg-primary hover:bg-primary-600 text-white">Salvar</button>
             </div>
         </div>
     </div>

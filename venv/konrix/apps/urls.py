@@ -16,5 +16,5 @@ urlpatterns = [
     path("create", view=create_view, name="create"),
 
     #Client
-    path("register-client", view=client_view, name="register-client"),
+    path("client", view=client_view, name="client"),
 ]

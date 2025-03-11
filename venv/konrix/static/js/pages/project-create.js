@@ -27,6 +27,26 @@ $(document).ready(function () {
     elements.cancelRequirementBtn.on('click', clearRequirementFields);
     elements.saveBtn.on('click', saveProject);
 
+    function listClients() {
+        const authToken = getAuthToken();
+        const uid = localStorage.getItem('uid');
+        if (!authToken) return redirectToLogin();
+
+        $.ajax({
+            url: `${window.config.api}/client/list/${uid}`,
+            method: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: { Authorization: `Bearer ${authToken}` },
+            success: (response) => response.data?.length && renderClients(response.data),
+            error: (error) => console.error('Erro:', error)
+        });
+    }
+
+    function renderClients(clients) {
+        console.log(clients)
+    }
+
     function cleanAllFields() {
         elements.projectName.val('');
         elements.projectBudget.val('');
