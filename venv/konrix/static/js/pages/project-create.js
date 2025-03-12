@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    listClients();
     let requirementsArray = [];
     let clientsCounter = 0;
     let reqCounter = 0;
@@ -27,6 +28,9 @@ $(document).ready(function () {
     elements.cancelRequirementBtn.on('click', clearRequirementFields);
     elements.saveBtn.on('click', saveProject);
 
+    function getAuthToken() {
+        return localStorage.getItem('authToken');
+    }
     function listClients() {
         const authToken = getAuthToken();
         const uid = localStorage.getItem('uid');
@@ -38,13 +42,32 @@ $(document).ready(function () {
             contentType: 'application/json',
             dataType: 'json',
             headers: { Authorization: `Bearer ${authToken}` },
-            success: (response) => response.data?.length && renderClients(response.data),
+            success: (response) => response.data && renderClients(response.data),
             error: (error) => console.error('Erro:', error)
         });
     }
 
     function renderClients(clients) {
-        console.log(clients)
+        elements.requirementClient.empty().append('<option selected>Selecione um cliente</option>');
+
+        clients.forEach(client => {
+            elements.requirementClient.append(
+                `<option value="${client.ID}|${client.NAME}" data-weight="${client.WEIGHT}">${client.NAME}</option>`
+            );
+        });
+
+        elements.requirementClient.on('change', function () {
+            const selectedOption = $(this).find(':selected');
+            const weight = selectedOption.data('weight');
+
+            if (weight) {
+                elements.clientSelectMatter.val(weight);
+            } else {
+                elements.clientSelectMatter.val("");
+            }
+
+            elements.clientSelectMatter.prop('disabled', true);
+        });
     }
 
     function cleanAllFields() {
@@ -77,19 +100,20 @@ $(document).ready(function () {
     }
 
     function addRequirement() {
+        const selectedValue = elements.requirementClient.val();
+        const [selectedID, selectedName] = selectedValue.split('|');
+
         const requirement = {
             id: reqCounter,
             name: elements.requirementName.val(),
             description: elements.requirementDescription.val(),
             budget: parseFloat(elements.requirementBudget.val()),
-            clientId: clientsCounter,
-            client: elements.requirementClient.val(),
+            clientId: selectedID,
+            client: selectedName,
             clientImportance: parseInt(elements.clientSelectMatter.val()),
             requirementImportance: parseInt(elements.requirementSelectMatter.val())
         };
-
         requirementsArray.push(requirement);
-        clientsCounter++;
         reqCounter++;
         clearRequirementFields();
         updateModalContent();

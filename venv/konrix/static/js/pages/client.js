@@ -5,6 +5,7 @@ $(document).ready(function () {
 function init() {
     listClients();
     setupEventHandlers();
+    setupSearchHandler();
 }
 
 function listClients() {
@@ -26,7 +27,6 @@ function listClients() {
 function renderClients(clients) {
     const container = $('#client-grid');
     container.empty();
-
     clients.forEach(client => container.append(createClientCard(client)));
     setupDeleteHandlers();
 }
@@ -160,3 +160,33 @@ function redirectToLogin() {
     alert('Token de autenticação não encontrado. Faça login novamente.');
     window.location.href = '/custom/login';
 }
+
+function setupSearchHandler() {
+    let timer = null;
+    const uid = localStorage.getItem('uid');
+    $("input[type='search']").on("input", function () {
+        let query = $(this).val().trim();
+
+        if (query.length > 3) {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                $.ajax({
+                    url: `${window.config.api}/client/filter/${query}/${uid}`,
+                    type: "GET",
+                    headers: { Authorization: `Bearer ${getAuthToken()}` },
+                    success: function (response) {
+                        if (response && response.data && response.data.length) {
+                            renderClients(response.data);
+                        }
+                    },
+                    error: function () {
+                        console.error("Erro ao buscar clientes");
+                    }
+                });
+            }, 500);
+        } else {
+            listClients();
+        }
+    });
+}
+
