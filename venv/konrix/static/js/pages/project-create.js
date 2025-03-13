@@ -108,13 +108,15 @@ $(document).ready(function () {
             name: elements.requirementName.val(),
             description: elements.requirementDescription.val(),
             budget: parseFloat(elements.requirementBudget.val()),
-            clientId: selectedID,
+            clientId: clientsCounter,
+            clientCode: selectedID,
             client: selectedName,
             clientImportance: parseInt(elements.clientSelectMatter.val()),
             requirementImportance: parseInt(elements.requirementSelectMatter.val())
         };
         requirementsArray.push(requirement);
         reqCounter++;
+        clientsCounter++;
         clearRequirementFields();
         updateModalContent();
     }
