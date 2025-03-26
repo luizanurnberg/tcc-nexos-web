@@ -206,10 +206,17 @@
 {% endblock content %}
 
 {% block extra_js %}
+    <!-- jQuery -->
+    <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+    
     <!-- Apexcharts js -->
     <script src="{% static 'libs/apexcharts/apexcharts.min.js' %}"></script>
 
-    <!-- Dashboard Project Page js -->
-    <script src="{% static 'js/pages/dashboard.js' %}"></script>
+    <!-- Dashboard Charts -->
+    <script src="{% static 'js/pages/monthly-releases-chart.js' %}"></script>
+    <script src="{% static 'js/pages/clients-chart.js' %}"></script>
+    
+    <!-- Dashboard Main js -->
+    <script src="{% static 'js/pages/release-metrics.js' %}"></script>
 {% endblock extra_js %}
 

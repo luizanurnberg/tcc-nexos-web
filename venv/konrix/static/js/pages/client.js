@@ -180,7 +180,7 @@ function setupSearchHandler() {
                         }
                     },
                     error: function () {
-                        console.error("Erro ao buscar clientes");
+                        console.error("Erro ao buscar clientes"); 
                     }
                 });
             }, 500);
