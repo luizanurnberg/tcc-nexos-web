@@ -1,110 +1,222 @@
-// static/js/pages/release-metrics.js
-function loadReleaseMetrics() {
-    const authToken = getAuthToken();
-    const uid = localStorage.getItem('uid');
-    if (!authToken) return redirectToLogin();
+document.addEventListener('DOMContentLoaded', function() {
+    function redirectToLogin() {
+        window.location.href = '/login';
+    }
 
-    $.ajax({
-        url: `${window.config.api}/release/metrics?uid=${uid}`,
-        method: 'GET',
-        contentType: 'application/json',
-        dataType: 'json',
-        headers: { Authorization: `Bearer ${authToken}` },
-        success: function(response) {
-            if (response.message === 'success' && response.data) {
-                updateDashboard(response.data);
+    function fetchReleaseMetrics() {
+        const authToken = localStorage.getItem('authToken');
+        const uid = localStorage.getItem('uid');
+        
+        if (!authToken) return redirectToLogin();
+
+        $.ajax({
+            url: `${window.config.api}/release/metrics?uid=${uid}`,
+            method: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            headers: { Authorization: `Bearer ${authToken}` },
+            success: function(response) {
+                if (response.message === 'success' && response.data) {
+                    updateDashboard(response.data);
+                }
+            },
+            error: function(error) {
+                console.error('Error fetching metrics:', error);
+            }
+        });
+    }
+
+    function updateDashboard(metrics) {
+        const statusChartContainer = document.querySelector(".status-chart-container");
+        const statisticsChartContainer = document.querySelector(".statistics-chart-container");
+    
+        if (!metrics || metrics.length === 0) {
+            console.log("Nenhum dado disponível. Ocultando gráficos.");
+    
+            // Esconde os cards inteiros
+            statusChartContainer.style.display = "none";
+            statisticsChartContainer.style.display = "none";
+            return;
+        }
+    
+        // Exibe os cards caso haja dados
+        statusChartContainer.style.display = "block";
+        statisticsChartContainer.style.display = "block";
+    
+        updateStatusChart(metrics);
+        updateStatisticsChart(metrics);
+    }
+
+    // 1. Gráfico de Status de Releases (Monthly Target)
+    function updateStatusChart(metrics) {
+        // Pegar o último mês ou somar todos os meses
+        const lastMonth = metrics[metrics.length - 1];
+        
+        const series = [
+            lastMonth.generation_releases || 0, // Em geração
+            lastMonth.finished_releases || 0,   // Concluídos
+            lastMonth.error_releases || 0       // Com erro
+        ];
+        
+        const options = {
+            chart: {
+                height: 375,
+                type: 'donut',
+            },
+            series: series,
+            labels: ['Em Geração', 'Concluídos', 'Com Erro'],
+            colors: ['#3073F1', '#0acf97', '#fa5c7c'],
+            legend: {
+                show: true,
+                position: 'bottom',
+                horizontalAlign: 'center',
+                floating: false,
+                fontSize: '14px',
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        height: 200
+                    },
+                    legend: {
+                        show: false
+                    },
+                }
+            }]
+        };
+        
+        if (window.statusChart) {
+            window.statusChart.updateSeries(series);
+        } else {
+            window.statusChart = new ApexCharts(
+                document.querySelector("#monthly-target"),
+                options
+            );
+            window.statusChart.render();
+        }
+    }
+
+// 2. Gráfico de Estatísticas - A partir de Janeiro/2025
+function updateStatisticsChart(metrics) {
+    const startDate = new Date(2025, 0, 1); 
+    const currentDate = new Date();
+    const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
+                       'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    let allMonths = [];
+    let date = new Date(startDate);
+    
+    while (date <= currentDate) {
+        allMonths.push({
+            year: date.getFullYear(),
+            month: date.getMonth() + 1,
+            label: `${monthNames[date.getMonth()]}/${date.getFullYear().toString().slice(-2)}`
+        });
+        date.setMonth(date.getMonth() + 1);
+    }
+
+    const metricsMap = {};
+    metrics.forEach(m => {
+        const key = `${m.year}-${m.month}`;
+        metricsMap[key] = m;
+    });
+
+    const seriesData = {
+        totalValues: [],
+        totalReleases: [],
+        finishedReleases: []
+    };
+
+    allMonths.forEach(m => {
+        const key = `${m.year}-${m.month}`;
+        const metric = metricsMap[key] || {};
+        
+        seriesData.totalValues.push(metric.total_value || 0);
+        seriesData.totalReleases.push(metric.total_releases || 0);
+        seriesData.finishedReleases.push(metric.finished_releases || 0);
+    });
+
+    var options = {
+        chart: {
+            height: 400,
+            type: 'bar',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '15%',
+                endingShape: 'rounded'
             }
         },
-        error: function(error) {
-            console.error('Error fetching metrics:', error);
-        }
-    });
-}
-
-function updateDashboard(metrics) {
-    // Calculate totals
-    let totalValue = 0;
-    let totalCompleted = 0;
-    let totalInProgress = 0;
-    let totalErrors = 0;
-    
-    metrics.forEach(month => {
-        totalValue += month.total_value;
-        totalCompleted += month.finished_releases;
-        totalInProgress += month.generation_releases;
-        totalErrors += month.error_releases;
-    });
-
-    // Update summary cards
-    $('#total-value').text(`R$ ${totalValue.toLocaleString('pt-BR')}`);
-    $('#completed-releases').text(totalCompleted);
-    $('#progress-releases').text(totalInProgress);
-    $('#error-releases').text(totalErrors);
-    
-    // Load recent releases
-    loadRecentReleases();
-    
-    // Dispatch event with metrics data
-    const event = new CustomEvent('metricsLoaded', { detail: metrics });
-    document.dispatchEvent(event);
-}
-
-function loadRecentReleases() {
-    const authToken = getAuthToken();
-    const uid = localStorage.getItem('uid');
-    if (!authToken) return redirectToLogin();
-
-    $.ajax({
-        url: `${window.config.api}/release/list?uid=${uid}&limit=5`,
-        method: 'GET',
-        contentType: 'application/json',
-        dataType: 'json',
-        headers: { Authorization: `Bearer ${authToken}` },
-        success: function(response) {
-            if (response.message === 'success' && response.data) {
-                const container = $('#recent-releases');
-                container.empty();
-                
-                response.data.forEach(release => {
-                    const statusColors = {
-                        'finished': 'success',
-                        'generation': 'warning',
-                        'error': 'danger'
-                    };
-                    
-                    const statusColor = statusColors[release.STATUS] || 'primary';
-                    
-                    container.append(`
-                        <div class="flex items-center border border-gray-200 dark:border-gray-700 rounded px-3 py-2">
-                            <div class="flex-shrink-0 me-2">
-                                <div class="w-12 h-12 flex justify-center items-center rounded-full text-${statusColor} bg-${statusColor}/25">
-                                    <i class="mgc_folder_line text-xl"></i>
-                                </div>
-                            </div>
-                            <div class="flex-grow">
-                                <h5 class="font-semibold mb-1">${release.TITLE}</h5>
-                                <p class="text-gray-400">R$ ${release.TOTAL_BUDGET.toLocaleString('pt-BR')}</p>
-                            </div>
-                            <div>
-                                <span class="badge bg-${statusColor}/10 text-${statusColor}">${release.STATUS}</span>
-                            </div>
-                        </div>
-                    `);
-                });
+        dataLabels: { enabled: false },
+        stroke: {
+            show: true,
+            width: 2,
+            colors: ['transparent']
+        },
+        series: [{
+            name: 'Valor Total (R$)',
+            data: seriesData.totalValues
+        }, {
+            name: 'Total Releases',
+            data: seriesData.totalReleases
+        },],
+        colors: ['#8A2BE2', '#DA70D6', '#8A2BE2'],
+        xaxis: {
+            categories: allMonths.map(m => m.label),
+            labels: { 
+                style: { fontSize: '12px' },
+                formatter: function(value) {
+                    const currentYear = new Date().getFullYear();
+                    const year = value.split('/')[1];
+                    return year == currentYear.toString().slice(-2) ? 
+                           value.split('/')[0] : value;
+                }
             }
         },
-        error: function(error) {
-            console.error('Error fetching recent releases:', error);
+        yaxis: [{
+            title: { text: 'Valor (R$)', style: { fontWeight: '500' } },
+            labels: {
+                formatter: function(value) {
+                    return 'R$ ' + value.toLocaleString('pt-BR');
+                }
+            }
+        }, {
+            opposite: true,
+            title: { text: 'Quantidade', style: { fontWeight: '500' } }
+        }],
+        grid: { borderColor: '#9ca3af20' },
+        fill: { opacity: 1 },
+        tooltip: {
+            y: {
+                formatter: function(val, { seriesIndex }) {
+                    if (seriesIndex === 0) {
+                        return val === 0 ? 'R$ 0,00' : 
+                               'R$ ' + val.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    }
+                    return val;
+                }
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'center',
+            offsetY: -5
         }
-    });
+    };
+
+    if (window.statisticsChart) {
+        window.statisticsChart.updateOptions(options);
+    } else {
+        window.statisticsChart = new ApexCharts(
+            document.querySelector("#crm-project-statistics"),
+            options
+        );
+        window.statisticsChart.render();
+    }
 }
 
-$(document).ready(function() {
-    loadReleaseMetrics();
-    
-    // Time period filter
-    $('.time-period').on('click', function() {
-        $('.time-period').removeClass('bg-primary/25 text-primary').addClass('bg-gray-400/25 text-gray-400');
-        $(this).removeClass('bg-gray-400/25 text-gray-400').addClass('bg-primary/25 text-primary');
-    });
+    // Inicializar o dashboard quando o DOM estiver pronto
+    fetchReleaseMetrics();
 });

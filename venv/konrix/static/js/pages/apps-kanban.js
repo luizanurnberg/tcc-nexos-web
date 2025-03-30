@@ -1,9 +1,12 @@
 $(document).ready(function () {
     const cleanPath = window.location.pathname.replace(/\/$/, '');
     const releaseId = cleanPath.split('/').pop();
+    const authToken = localStorage.getItem('authToken');;
+    if (!authToken) return redirectToLogin();
 
     $.ajax({
         url: `${window.config.api}/kanban/list/${releaseId}`,
+        headers: { Authorization: `Bearer ${authToken}` },
         type: 'GET',
         dataType: 'json',
         success: function (data) {
