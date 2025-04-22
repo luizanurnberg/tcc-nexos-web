@@ -25,7 +25,7 @@
         sidenav: {
             view: "hover"  
         },
-        api: "http://192.168.1.4:3000"
+        api: "http://192.168.1.2:3000"
     };
 
     const html = document.getElementsByTagName("html")[0];

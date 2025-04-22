@@ -2,21 +2,19 @@
   <img src="venv/konrix/static/images/logo.png" alt="NEXOS Logo" width="80" height="80">
 </p>
 
-# NEXOS (Next Release Optimization System) - Front
+# NEXOS (Next Release Optimization System) - Frontend
 
-Repositório referente ao front do trabalho de conclusão de curso.
+Repository for the frontend of the graduation project.
 
-###### Desenvolvedora: Luíza Nurnberg
+###### Developer: Luíza Nurnberg
 
-![Em Desenvolvimento](https://img.shields.io/badge/Status-Em_Desenvolvimento-green)
+![Completed](https://img.shields.io/badge/Status-Completed-blue)
 
-## Tecnologias Utilizadas
-[![Python](https://skillicons.dev/icons?i=python)](https://www.pyhton.com)
-[![Django](https://skillicons.dev/icons?i=django)](https://www.django.com)
+## Technologies Used
+[![Python](https://skillicons.dev/icons?i=python)](https://www.python.org)
+[![Django](https://skillicons.dev/icons?i=django)](https://www.djangoproject.com)
 
-
-## Para executar
-- source venv/bin/activate para ativar a venv
-- executar sempre o pip freeze > requirements.txt depois de instalar dependencias
-- acessar tcc-nexos-web/venv/konrix e executar python3 -B manage.py runserver
-- deactivate para desativar a venv 
+## How to Run
+- Run `source venv/bin/activate` to activate the virtual environment
+- Run `pip install -r requirements.txt` to install dependencies
+- Navigate to `tcc-nexos-web/venv/konrix` and run `python3 -B manage.py runserver`
